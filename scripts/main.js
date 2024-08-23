@@ -31,6 +31,7 @@ const game = ((function () {
         // Place piece
         board[symbolPosAsNum] = turnSymbol;
         changeTurn();
+        document.querySelector(`[data-index="${symbolPosAsNum}"]`).textContent = turnSymbol;
 
         // Check for win
         // Disregard the "console.log". Place your win logic inside the if statement
@@ -78,26 +79,25 @@ const game = ((function () {
 
     }
 
-    return { board, turnSymbol };
+    return { board, turnSymbol , placePiece};
 
 }))();
 
-
 // Test Game. Needs to be changed because prompt doesn't work
 // Use this to create the logic with the UI
-let keepPlaying = true;
-while (keepPlaying) {
+// let keepPlaying = true;
+// while (keepPlaying) {
 
-    console.log(
-        game.board[0] + "|" + game.board[1] + "|" + game.board[2] + "\n" +
-        game.board[3] + "|" + game.board[4] + "|" + game.board[5] + "\n" +
-        game.board[6] + "|" + game.board[7] + "|" + game.board[8]
-    );
-    const input = prompt("Where would you like to place an " + game.turnSymbol);
+//     console.log(
+//         game.board[0] + "|" + game.board[1] + "|" + game.board[2] + "\n" +
+//         game.board[3] + "|" + game.board[4] + "|" + game.board[5] + "\n" +
+//         game.board[6] + "|" + game.board[7] + "|" + game.board[8]
+//     );
+//     const input = prompt("Where would you like to place an " + game.turnSymbol);
 
-    if(input == 'quit') {
-        keepPlaying = false;
-    }
+//     if(input == 'quit') {
+//         keepPlaying = false;
+//     }
 
-    game.placePiece(input);
-}
+//     game.placePiece(input);
+// }
