@@ -1,5 +1,5 @@
 const game = ((function () {
-    let board = [];
+    let board = ['','','','','','','','','',''];
     let winPatterns = [
         // Horizontal
         [0, 1, 2],
@@ -21,7 +21,6 @@ const game = ((function () {
     // This is obvious
     const changeTurn = () => turn = !turn;
 
-    // 
     const placePiece = (function (symbolPos) {
 
         // Converts values to usable values
@@ -34,16 +33,15 @@ const game = ((function () {
         document.querySelector(`[data-index="${symbolPosAsNum}"]`).textContent = turnSymbol;
 
         // Check for win
-        // Disregard the "console.log". Place your win logic inside the if statement
-        const win = winCheck(symbolPos);
-        if (win.isWin) {
+        const win = winCheck(symbolPosAsNum);
+        if (win == true) {
             console.log(board[symbolPosAsNum] + ' has won the game!');
         }
 
     });
 
     function winCheck (symbolPos) {
-        
+
         // Iterate through winPatterns which is a collection of possible positions that
         // would warrant a win
         for (let i = 0; i < winPatterns.length; i++) {
@@ -54,50 +52,69 @@ const game = ((function () {
 
                 // This works by saving the first piece checked in the win pattern.
                 // Then it check the other two positions to see if the pieces all match
-                let isWin = true;
-                const firstSymbol = board[winPatterns[i][0]];
+                let totalSymbols = 0;
+                const firstSymbol = board[symbolPos];
 
                 for (let x = 0; x < winPatterns[i].length; x++) {
                     
-                    if (board[winPatterns[i][x]] !== firstSymbol) {
+                    if (board[winPatterns[i][x]] == firstSymbol) {
                         
-                        isWin = false;
-                        
+                        //console.log(`Wrong: ${board[winPatterns[i][x]]} != ${firstSymbol}`);
+                        totalSymbols += 1;
+
                     }
                     
                 }
 
-                const winArray = isWin ? winPatterns[i] : null;
+                if (totalSymbols == 3) {
 
-                return { isWin , winArray , placePiece};
+                    // This is where I left off. This is broken and doesn't work
+                    uiController.displayWinner(board[symbolPos]);
+                    return true;
+                }
 
             }
 
         }
 
-        
+        return false;
 
     }
 
-    return { board, turnSymbol , placePiece};
+    return {placePiece, board};
 
 }))();
 
-// Test Game. Needs to be changed because prompt doesn't work
-// Use this to create the logic with the UI
-// let keepPlaying = true;
-// while (keepPlaying) {
+const uiController = (function() {
+    
+    function displayWinner (winner) {
 
-//     console.log(
-//         game.board[0] + "|" + game.board[1] + "|" + game.board[2] + "\n" +
-//         game.board[3] + "|" + game.board[4] + "|" + game.board[5] + "\n" +
-//         game.board[6] + "|" + game.board[7] + "|" + game.board[8]
-//     );
-//     const input = prompt("Where would you like to place an " + game.turnSymbol);
+        const alert = document.createElement('div');
+        alert.className = "winnerAlert";
+        alert.innerHTML = `
+            <p>${winner} has won the game!</p>
+        `;
 
-//     if(input == 'quit') {
-//         keepPlaying = false;
-//     }
+    }
 
-//     game.placePiece(input);
-// }
+})();
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const uiBoard = document.querySelectorAll("[data-index]");
+
+    uiBoard.forEach(square => {
+
+        square.addEventListener('click', (event) => {
+
+            const clickedSquare = event.target;
+
+            const index = clickedSquare.getAttribute('data-index');
+
+            game.placePiece(index);
+
+        });
+
+    });
+
+});
