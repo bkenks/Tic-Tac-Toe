@@ -30,7 +30,7 @@ const game = ((function () {
         // Place piece
         board[symbolPosAsNum] = turnSymbol;
         changeTurn();
-        document.querySelector(`[data-index="${symbolPosAsNum}"]`).textContent = turnSymbol;
+        document.querySelector(`[data-index='${symbolPosAsNum}']`).textContent = turnSymbol;
 
         // Check for win
         const win = winCheck(symbolPosAsNum);
@@ -68,9 +68,9 @@ const game = ((function () {
 
                 if (totalSymbols == 3) {
 
-                    // This is where I left off. This is broken and doesn't work
-                    uiController.displayWinner(board[symbolPos]);
+                    displayWinner(board[symbolPos]);
                     return true;
+
                 }
 
             }
@@ -81,27 +81,38 @@ const game = ((function () {
 
     }
 
-    return {placePiece, board};
+    const alert = document.querySelector('.winnerAlert');
 
-}))();
-
-const uiController = (function() {
-    
     function displayWinner (winner) {
 
-        const alert = document.createElement('div');
-        alert.className = "winnerAlert";
-        alert.innerHTML = `
-            <p>${winner} has won the game!</p>
-        `;
+        alert.style.display = 'block';
 
     }
 
-})();
+    function closeWinner () {
 
-document.addEventListener("DOMContentLoaded", () => {
+        alert.style.display = 'none';
 
-    const uiBoard = document.querySelectorAll("[data-index]");
+    }
+
+    function clearBoard () {
+
+        board = ['','','','','','','','','',''];
+        let cells = document.querySelectorAll('[data-index]');
+        cells.forEach(cell => {
+            cell.textContent = '';
+        });
+        closeWinner();
+    }
+
+    return {placePiece, clearBoard, board};
+
+}))();
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const uiBoard = document.querySelectorAll('[data-index]');
+    const restartBtn = document.querySelector('#restartBtn');
 
     uiBoard.forEach(square => {
 
@@ -115,6 +126,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
 
+    });
+
+    restartBtn.addEventListener('click', () => {
+        game.clearBoard();
+        console.log('test');
     });
 
 });

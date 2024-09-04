@@ -14,6 +14,23 @@ body {
     margin-bottom: 20px;
 }
 
+.winnerAlert {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: large;
+    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    z-index: 999;
+    background-color: #adceff;
+    padding: 10px 30px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08);
+}
+
 .cell {
     width: 100px;
     height: 100px;
